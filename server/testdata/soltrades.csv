@@ -1,0 +1,2 @@
+﻿Date,Type,Action,Symbol,Instrument Type,Description,Value,Quantity,Average Price,Commissions,Fees,Multiplier,Root Symbol,Underlying Symbol,Expiration Date,Strike Price,Call or Put,Order #
+2020-12-29T06:04:27+1100,Trade,BUY_TO_CLOSE,SOL   210115P00007500,Equity Option,Bought 4 SOL 01/15/21 Put 7.50 @ 0.29,-116,4,-29,0,-0.54,100,SOL,SOL,1/16/21,7.5,PUT,120481875

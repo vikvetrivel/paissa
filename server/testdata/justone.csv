@@ -1,0 +1,2 @@
+Date,Type,Action,Symbol,Instrument Type,Description,Value,Quantity,Average Price,Commissions,Fees,Multiplier,Root Symbol,Underlying Symbol,Expiration Date,Strike Price,Call or Put,Order #
+2020-12-10T01:30:06+1100,Trade,BUY_TO_OPEN,ELY   220121C00035000,Equity Option,Bought 3 ELY 01/21/22 Call 35.00 @ 2.45,-735,3,-245,-3,-0.41,100,ELY,ELY,1/22/22,35,CALL,117207490

@@ -1,0 +1,33 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "paisa server",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js"
+    },
+    "author": "Vikram Vetrivel",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.26.1",
+        "axios-request-throttle": "^1.0.0",
+        "bcrypt": "^5.0.1",
+        "body-parser": "^1.19.1",
+        "cors": "^2.8.5",
+        "csvtojson": "^2.0.10",
+        "date-fns": "^2.28.0",
+        "dotenv": "^14.2.0",
+        "express": "^4.17.2",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^6.1.7",
+        "mongoose-paginate-v2": "^1.5.0",
+        "node-cron": "^3.0.0",
+        "request": "^2.88.2",
+        "yahoo-finance2": "^2.3.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    }
+}

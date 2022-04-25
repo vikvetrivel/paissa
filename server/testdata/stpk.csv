@@ -1,0 +1,13 @@
+Date,Type,Action,Symbol,Instrument Type,Description,Value,Quantity,Average Price,Commissions,Fees,Multiplier,Root Symbol,Underlying Symbol,Expiration Date,Strike Price,Call or Put,Order #
+2022-03-11T09:00:00+1100,Money Movement,,MSFT,Equity,MICROSOFT CORP,31,0,,--,0,,,,,,,
+2022-03-11T09:00:00+1100,Money Movement,,MSFT,Equity,MICROSOFT CORP,-4.65,0,,--,0,,,,,,,
+2022-03-04T07:53:25+1100,Trade,BUY_TO_OPEN,MSFT,Equity,Bought 10 MSFT @ 295.16,"-2,951.60",10,-295.16,0,-0.008,,,,,,,202776496
+2021-12-10T09:00:00+1100,Money Movement,,MSFT,Equity,MICROSOFT CORP,31,0,,--,0,,,,,,,
+2021-12-10T09:00:00+1100,Money Movement,,MSFT,Equity,MICROSOFT CORP,-4.65,0,,--,0,,,,,,,
+2021-09-30T23:21:49+1000,Trade,BUY_TO_OPEN,MSFT,Equity,Bought 5 MSFT @ 284.74,"-1,423.70",5,-284.74,0,-0.004,,,,,,,175004118
+2021-09-29T06:07:14+1000,Trade,BUY_TO_OPEN,MSFT,Equity,Bought 10 MSFT @ 283.51,"-2,835.10",10,-283.51,0,-0.008,,,,,,,174746698
+2021-09-21T05:51:26+1000,Trade,BUY_TO_OPEN,MSFT,Equity,Bought 10 MSFT @ 293.49,"-2,934.90",10,-293.49,0,-0.008,,,,,,,173143753
+2021-09-10T07:00:00+1000,Money Movement,,MSFT,Equity,MICROSOFT CORP,11.2,0,,--,0,,,,,,,
+2021-09-10T07:00:00+1000,Money Movement,,MSFT,Equity,MICROSOFT CORP,-1.68,0,,--,0,,,,,,,
+2021-08-31T00:00:12+1000,Trade,BUY_TO_OPEN,MSFT,Equity,Bought 5 MSFT @ 302.84,"-1,514.20",5,-302.84,0,-0.004,,,,,,,169271179
+2021-07-26T23:39:09+1000,Trade,BUY_TO_OPEN,MSFT,Equity,Bought 20 MSFT @ 287.80,"-5,756.00",20,-287.8,0,-0.016,,,,,,,162733145
