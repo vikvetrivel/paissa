@@ -45,50 +45,54 @@ export default function Trades() {
     const dispatch = useDispatch();
 
     const getTradesData = async () => {
-        let URL = "http://192.168.40.118:8000/api/trades/?limit=100";
+        try {
+            let URL = "http://192.168.40.118:8000/api/trades/?limit=100";
 
-        if (activePage != 1) {
-            URL += `&page=${activePage}`;
-        }
+            if (activePage != 1) {
+                URL += `&page=${activePage}`;
+            }
 
-        if (sideSelection != "") {
-            URL += `&side=${sideSelection}`;
-        }
+            if (sideSelection != "") {
+                URL += `&side=${sideSelection}`;
+            }
 
-        if (statusSelection != "") {
-            URL += `&status=${statusSelection}`;
-        }
+            if (statusSelection != "") {
+                URL += `&status=${statusSelection}`;
+            }
 
-        if (tickerSelection != "") {
-            URL += `&symbol=${tickerSelection}`;
-        }
+            if (tickerSelection != "") {
+                URL += `&symbol=${tickerSelection}`;
+            }
 
-        const { data } = await axios.get(URL);
+            const { data } = await axios.get(URL);
 
-        data.docs.forEach((item) => {
-            let netLiq = 0;
-            item.spreads.forEach((s) => {
-                if (s.status != "Open") return;
-                let spreadNetLiq = 0;
-                s.legs.forEach((leg) => {
-                    if (leg.status != "Open") return;
-                    let size = leg.size;
-                    if (leg.instrumentType.includes("Option"))
-                        size = leg.size * 100;
-                    if (leg.direction == "Short") size *= -1;
-                    leg.netLiq = size * leg?.tickerDetails?.closingPrices;
-                    spreadNetLiq += leg.netLiq;
+            data.docs.forEach((item) => {
+                let netLiq = 0;
+                item.spreads.forEach((s) => {
+                    if (s.status != "Open") return;
+                    let spreadNetLiq = 0;
+                    s.legs.forEach((leg) => {
+                        if (leg.status != "Open") return;
+                        let size = leg.size;
+                        if (leg.instrumentType.includes("Option"))
+                            size = leg.size * 100;
+                        if (leg.direction == "Short") size *= -1;
+                        leg.netLiq = size * leg?.tickerDetails?.closingPrices;
+                        spreadNetLiq += leg.netLiq;
+                    });
+                    s.netLiq = spreadNetLiq;
+                    netLiq += spreadNetLiq;
                 });
-                s.netLiq = spreadNetLiq;
-                netLiq += spreadNetLiq;
+                item.netLiq = netLiq;
             });
-            item.netLiq = netLiq;
-        });
 
-        setTradesData(data.docs);
-        setTotalPages(data.totalPages);
-        setPage(data.page);
-        dispatch(setTrades(data.docs));
+            setTradesData(data.docs);
+            setTotalPages(data.totalPages);
+            setPage(data.page);
+            dispatch(setTrades(data.docs));
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const getTickers = async () => {

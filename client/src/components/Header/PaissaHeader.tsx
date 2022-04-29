@@ -1,6 +1,7 @@
 import { createStyles, Header, Group, Burger, Button } from "@mantine/core";
 
 import { useBooleanToggle } from "@mantine/hooks";
+import FileUploader from "../FileUploader/FileUploader";
 
 const useStyles = createStyles((theme) => ({
     header: {
@@ -39,6 +40,8 @@ const useStyles = createStyles((theme) => ({
 
 export function PaissaHeader() {
     const [opened, toggleOpened] = useBooleanToggle(false);
+    const [tradeImportModalOpened, toggleTradeImportModalOpened] =
+        useBooleanToggle(false);
     const { classes } = useStyles();
 
     return (
@@ -60,11 +63,19 @@ export function PaissaHeader() {
                         variant='outline'>
                         New Portfolio
                     </Button>
-                    <Button color='yellow' radius='md' size='xs'>
+                    <Button
+                        onClick={() => toggleTradeImportModalOpened()}
+                        color='yellow'
+                        radius='md'
+                        size='xs'>
                         Add Trades
                     </Button>
                 </Group>
             </div>
+            <FileUploader
+                opened={tradeImportModalOpened}
+                callBackFn={toggleTradeImportModalOpened}
+            />
         </Header>
     );
 }

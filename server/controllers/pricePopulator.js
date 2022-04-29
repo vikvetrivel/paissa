@@ -6,7 +6,7 @@ import { isAfter } from "date-fns";
 
 axiosThrottle.use(axios, { requestsPerSecond: 0.2 });
 export const pricePopulator = async () => {
-    console.log("Starting Price Populator at " + new Date());
+    //console.log("Starting Price Populator at " + new Date());
     let finnhub_apiKey = "c41le1iad3ie4kh3ns70";
     let polygon_apikey = "pL6aDMPUUMZfSqYTSd80HD4L1jHFOivS";
     let bulkWriteObj = [];
@@ -63,8 +63,6 @@ export const pricePopulator = async () => {
         })
     );
 
-    console.log(yahooFailures);
-
     await Promise.all(
         yahooFailures.map(async (t) => {
             try {
@@ -72,11 +70,6 @@ export const pricePopulator = async () => {
                     `https://api.polygon.io/v2/aggs/ticker/O:${t}/prev?adjusted=true&apiKey=${polygon_apikey}`
                 );
 
-                /*console.log(
-                    `https://api.polygon.io/v2/aggs/ticker/O:${t}/prev?adjusted=true&apiKey=${polygon_apikey}`
-                );*/
-
-                console.log(results);
                 if (results) {
                     bulkWriteObj.push({
                         updateOne: {
@@ -98,4 +91,5 @@ export const pricePopulator = async () => {
     Ticker.bulkWrite(bulkWriteObj, (err) => {
         if (err) console.error("Error saving Ticker Data " + err);
     });
+    //console.log(process.memoryUsage());
 };

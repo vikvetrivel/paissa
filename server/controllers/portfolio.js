@@ -14,6 +14,20 @@ export const getPortfolioValue = async (req, res, next) => {
         return res.status(200).json(portfolios);
     }
 };
+
+export const getPortfolioMetaData = async (req, res, next) => {
+    res.setHeader("content-type", "application/json");
+    let q = req.query;
+
+    let portfolios = await Portfolio.find().select("_id broker");
+    if (portfolios.totalDocs == 0)
+        return res.status(404).json({
+            error: "Could not find any portfolios",
+        });
+    else {
+        return res.status(200).json(portfolios);
+    }
+};
 export const get = async (req, res, next) => {
     res.setHeader("content-type", "application/json");
     let q = req.query;
