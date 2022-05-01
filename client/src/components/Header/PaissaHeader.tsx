@@ -1,6 +1,8 @@
 import { createStyles, Header, Group, Burger, Button } from "@mantine/core";
 
 import { useBooleanToggle } from "@mantine/hooks";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import FileUploader from "../FileUploader/FileUploader";
 
 const useStyles = createStyles((theme) => ({
@@ -43,6 +45,16 @@ export function PaissaHeader() {
     const [tradeImportModalOpened, toggleTradeImportModalOpened] =
         useBooleanToggle(false);
     const { classes } = useStyles();
+
+    const underlyingUpdated = useSelector(
+        (state: any) => state.trades.underlyingChanged
+    );
+
+    useEffect(() => {
+        if (underlyingUpdated == true) {
+            toggleTradeImportModalOpened(false);
+        }
+    }, [underlyingUpdated]);
 
     return (
         <Header height={45} className={classes.header} mb={120}>

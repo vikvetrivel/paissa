@@ -5,16 +5,18 @@ import {
     Stack,
     Button,
     MantineTheme,
+    Title,
     Loader,
     Select,
     createStyles,
 } from "@mantine/core";
 import { CloudUpload } from "tabler-icons-react";
-import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { Dropzone, DropzoneStatus } from "@mantine/dropzone";
 import { useState, useEffect } from "react";
 
 import axios from "axios";
-import { useBooleanToggle } from "@mantine/hooks";
+import { useDispatch } from "react-redux";
+import { setUnderlyingChanged } from "../Trades/TradesSlice";
 
 interface PortfolioMeta {
     _id: string;
@@ -60,11 +62,14 @@ function getActiveColor(status: DropzoneStatus, theme: MantineTheme) {
 
 export function FileDropZone() {
     const theme = useMantineTheme();
-    const [files, setFiles] = useState<File[]>([]);
+    const [csvFile, setCSVFile] = useState<Blob>();
     const [portfolios, setPortfolios] = useState([]);
     const [selectedPortfolio, setSelectedPortfolio] = useState<string>();
 
-    const [uploadInProgress, setUploadInProgress] = useBooleanToggle(false);
+    const [uploadInProgress, setUploadInProgress] =
+        useState("Upload Trades CSV");
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         // get the available portfolios for this user.
@@ -79,13 +84,36 @@ export function FileDropZone() {
         getPorfolioMeta();
     }, []);
 
-    const uploadFiles = () => {
-        setUploadInProgress(true);
+    const uploadFiles = async () => {
+        console.log(csvFile);
+        setUploadInProgress("Uploading");
+        const formData: any = new FormData();
+        formData.append("file", csvFile);
+        formData.append("pid", selectedPortfolio);
+
+        const headers = {
+            "Content-Type": "multipart/form-data",
+        };
+
+        const url = "http://localhost:8000/api/importExecutions";
+
+        try {
+            const response = await axios.post(url, formData, {
+                headers: headers,
+            });
+            setUploadInProgress("Upload Complete");
+            dispatch(setUnderlyingChanged(true));
+        } catch (err) {
+            console.log(err);
+            setUploadInProgress("Upload Failed");
+            alert("Oops");
+        }
     };
 
     return (
         <Stack align='center' justify='space-around'>
-            {uploadInProgress == false ? (
+            <Title order={2}>{uploadInProgress}</Title>
+            {uploadInProgress == "Upload Trades CSV" ? (
                 <>
                     <Select
                         label='Portfolio'
@@ -95,7 +123,7 @@ export function FileDropZone() {
                     />
 
                     <Dropzone
-                        onDrop={(files) => setFiles(files)}
+                        onDrop={(files) => setCSVFile(files[0])}
                         onReject={(files) =>
                             console.log("rejected files", files)
                         }
@@ -135,16 +163,18 @@ export function FileDropZone() {
                             </div>
                         )}
                     </Dropzone>
+                    <Button
+                        onClick={() => uploadFiles()}
+                        color='orange'
+                        disabled={csvFile ? false : true}>
+                        Upload Files
+                    </Button>
                 </>
-            ) : (
+            ) : uploadInProgress == "Uploading" ? (
                 <Loader color='orange' variant='bars' />
+            ) : (
+                ""
             )}
-            <Button
-                onClick={() => uploadFiles()}
-                color='orange'
-                disabled={files.length > 0 ? false : true}>
-                Upload Files
-            </Button>
         </Stack>
     );
 }

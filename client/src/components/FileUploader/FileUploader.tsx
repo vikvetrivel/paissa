@@ -15,10 +15,11 @@ function FileUploader(props: FileUploaderProps) {
 
     return (
         <Modal
+            closeOnClickOutside={false}
+            closeOnEscape={false}
             centered
             opened={props.opened}
-            onClose={() => props.callBackFn(false)}
-            title='Add Trades!'>
+            onClose={() => props.callBackFn(false)}>
             <FileDropZone />
         </Modal>
     );

@@ -17,7 +17,7 @@ export const spreadSchema = new Schema({
     },
     howClosed: {
         type: String,
-        default: "Closed",
+        default: "Still Open",
         enum: ["Closed", "Rolled Out", "Still Open"],
     },
     nextSpread: {

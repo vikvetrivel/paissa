@@ -1,5 +1,4 @@
 import { createStyles, Card, Text, Group, Space, Badge } from "@mantine/core";
-
 import LegQuickView from "../Legs/LegQuickView";
 
 const useStyles = createStyles((theme) => ({
@@ -73,7 +72,9 @@ export function SpreadSummary(props) {
                     </Text>
 
                     {openLegs.map((l) => {
-                        return <LegQuickView leg={l}></LegQuickView>;
+                        return (
+                            <LegQuickView key={l._id} leg={l}></LegQuickView>
+                        );
                     })}
                 </div>
             ) : (

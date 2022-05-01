@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import mongoose from "mongoose";
 import Cors from "cors";
 import bodyParser from "body-parser";
@@ -23,6 +24,7 @@ const DATABASE =
 mongoose.connect(DATABASE, {}).then(() => console.log("MongoDB Connected"));
 
 //Middlewares
+app.use(multer({ dest: "uploads/" }).single("file"));
 app.use(bodyParser.json());
 app.use(Cors());
 
@@ -38,7 +40,7 @@ app.listen(PORT, () => {
 
 //pricePopulator();
 
-cron.schedule("* * 6 * * *", () => {
-    console.log("Cron job running once every 6 hours");
+cron.schedule("1 30 * * * *", () => {
+    console.log("Cron job running once every 30 minutes " + new Date());
     pricePopulator();
 });

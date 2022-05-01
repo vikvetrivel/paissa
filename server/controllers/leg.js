@@ -101,6 +101,7 @@ export const importExecutionsFromFile = async (req, res, next) => {
                 break;
 
             default:
+                console.log("Unsupported Broker");
                 res.status(500).send("Unsupported Broker");
                 return;
         }
@@ -128,7 +129,7 @@ export const importExecutionsFromFile = async (req, res, next) => {
 
         let tradesFromDB = await Trade.find({
             underlying: { $in: uniqueUnderlyingsFound },
-            status: "OPEN",
+            status: "Open",
             portfolio: portfolio._id,
         });
 
@@ -222,6 +223,7 @@ export const importExecutionsFromFile = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(500).send("Error:  " + err);
     }
 };
@@ -252,8 +254,8 @@ const handleFuturesExecution = (ao, otm) => {
                     if (ao.size == legs[l].size) {
                         ao.direction = "ClosingTrade";
                         addExecutionToLeg(legs[l], ao);
-                        if (!underlyingTrades[t].status)
-                            underlyingTrades[t].status = "Modified";
+                        if (!underlyingTrades[t].editStatus)
+                            underlyingTrades[t].editStatus = "Modified";
                         legs[l].status = "Closed";
                         return true;
                     }
@@ -277,8 +279,8 @@ const handleFuturesExecution = (ao, otm) => {
                         copyOfAO.size = legs[l].size;
                         ao.size -= legs[l].size;
                         addExecutionToLeg(legs[l], copyOfAO);
-                        if (!underlyingTrades[t].status)
-                            underlyingTrades[t].status = "Modified";
+                        if (!underlyingTrades[t].editStatus)
+                            underlyingTrades[t].editStatus = "Modified";
                         legs[l].status = "Closed";
                     }
                 }
@@ -317,8 +319,8 @@ const handleClosingExecution = (ao, otm) => {
                 if (execs) {
                     if (ao.size == legs[l].size) {
                         addExecutionToLeg(legs[l], ao);
-                        if (!underlyingTrades[t].status)
-                            underlyingTrades[t].status = "Modified";
+                        if (!underlyingTrades[t].editStatus)
+                            underlyingTrades[t].editStatus = "Modified";
                         legs[l].status = "Closed";
                         return true;
                     }
@@ -340,8 +342,8 @@ const handleClosingExecution = (ao, otm) => {
                         copyOfAO.size = legs[l].size;
                         ao.size -= legs[l].size;
                         addExecutionToLeg(legs[l], copyOfAO);
-                        if (!underlyingTrades[t].status)
-                            underlyingTrades[t].status = "Modified";
+                        if (!underlyingTrades[t].editStatus)
+                            underlyingTrades[t].editStatus = "Modified";
                         legs[l].status = "Closed";
                     }
                 }
@@ -888,12 +890,12 @@ async function populateCompanies(adaptorOutputs) {
     ];
 
     // Do we have all the required companies in our database?
-    let existingSymbolsInDB = await Company.find({
+    let existingSymbolsInDB_o = await Company.find({
         ticker: { $in: uniqueUnderlyingsFound },
     }).select("ticker _id");
 
-    existingSymbolsInDB = [
-        ...new Set(existingSymbolsInDB.map((x) => x.ticker)),
+    let existingSymbolsInDB = [
+        ...new Set(existingSymbolsInDB_o.map((x) => x.ticker)),
     ];
 
     let newCompaniesToCreate = uniqueUnderlyingsFound.filter(
@@ -902,9 +904,10 @@ async function populateCompanies(adaptorOutputs) {
 
     let companyMap = await createCompanies(newCompaniesToCreate);
 
-    existingSymbolsInDB.forEach((s) => {
+    existingSymbolsInDB_o.forEach((s) => {
         companyMap.set(s.ticker, s._id);
     });
+
     return [uniqueUnderlyingsFound, companyMap];
 }
 
@@ -914,12 +917,12 @@ async function populateTickers(adaptorOutputs) {
     ];
 
     // Do we have all the required tickers in our database?
-    let existingTickersinDB = await Ticker.find({
+    let existingTickersinDB_o = await Ticker.find({
         ticker: { $in: uniqueTickersFound },
     }).select("ticker _id");
 
-    existingTickersinDB = [
-        ...new Set(existingTickersinDB.map((x) => x.ticker)),
+    let existingTickersinDB = [
+        ...new Set(existingTickersinDB_o.map((x) => x.ticker)),
     ];
 
     let newTickersToCreate = uniqueTickersFound.filter(
@@ -928,8 +931,8 @@ async function populateTickers(adaptorOutputs) {
 
     let tickerMap = await createTickers(newTickersToCreate);
 
-    existingTickersinDB.forEach((s) => {
-        companyMap.set(s.ticker, s._id);
+    existingTickersinDB_o.forEach((s) => {
+        tickerMap.set(s.ticker, s._id);
     });
     return tickerMap;
 }

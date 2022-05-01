@@ -4,12 +4,15 @@ import {
     Pagination,
     MultiSelect,
     Grid,
+    LoadingOverlay,
 } from "@mantine/core";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { TradesTable } from "./TradesTable";
-import { setTrades } from "./TradesSlice";
-import { useDispatch } from "react-redux";
+import { setTrades, setUnderlyingChanged } from "./TradesSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import { useBooleanToggle } from "@mantine/hooks";
 
 const sideData = [
     { value: "Long", label: "Long", group: "Side" },
@@ -41,8 +44,19 @@ export default function Trades() {
     const [statusSelection, setstatusSelection] = useState("");
     const [allTickers, setAllTickers] = useState([]);
     const [tickerSelection, setTickerSelection] = useState("");
-
+    const [dataUpdating, setDataUpdating] = useBooleanToggle(false);
     const dispatch = useDispatch();
+
+    const underlyingUpdated = useSelector(
+        (state) => state.trades.underlyingChanged
+    );
+
+    useEffect(() => {
+        if (underlyingUpdated == true) {
+            getTradesData();
+            dispatch(setUnderlyingChanged(false));
+        }
+    }, [underlyingUpdated]);
 
     const getTradesData = async () => {
         try {
@@ -64,6 +78,7 @@ export default function Trades() {
                 URL += `&symbol=${tickerSelection}`;
             }
 
+            setDataUpdating(true);
             const { data } = await axios.get(URL);
 
             data.docs.forEach((item) => {
@@ -90,8 +105,10 @@ export default function Trades() {
             setTotalPages(data.totalPages);
             setPage(data.page);
             dispatch(setTrades(data.docs));
+            setDataUpdating(false);
         } catch (error) {
             console.log(error);
+            setDataUpdating(false);
         }
     };
 
@@ -172,6 +189,7 @@ export default function Trades() {
                 </Grid.Col>
             </Grid>
             <TradesTable data={tradesData} />
+            <LoadingOverlay color='orange' visible={dataUpdating} />
         </>
     );
 }

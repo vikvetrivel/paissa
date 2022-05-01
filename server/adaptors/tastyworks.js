@@ -7,7 +7,8 @@ const tastyworks_adaptor = (req, res) => {
     return new Promise((resolve, reject) => {
         //let sanitizedInputs = new Map();
         let adaptorOutputs = [];
-        const csvFilePath = req.body.csvFilePath;
+        const csvFilePath = req.file.path;
+        console.log("Inside Tastyworks adaptor");
 
         csvtojson()
             .fromFile(csvFilePath)

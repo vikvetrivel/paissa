@@ -4,11 +4,13 @@ import { iTrades } from "./iTrades";
 export interface TradesState {
     trades: iTrades[];
     selectedTrade: string;
+    underlyingChanged: boolean;
 }
 
 const initialState: TradesState = {
     trades: [],
     selectedTrade: "",
+    underlyingChanged: false,
 };
 
 export const TradesSlice = createSlice({
@@ -22,10 +24,15 @@ export const TradesSlice = createSlice({
         setSelectedTrade: (state, action: PayloadAction<string>) => {
             state.selectedTrade = action.payload;
         },
+
+        setUnderlyingChanged: (state, action: PayloadAction<boolean>) => {
+            state.underlyingChanged = action.payload;
+        },
     },
 });
 
 // Action creators are generated for each case reducer function
-export const { setTrades, setSelectedTrade } = TradesSlice.actions;
+export const { setTrades, setSelectedTrade, setUnderlyingChanged } =
+    TradesSlice.actions;
 
 export default TradesSlice.reducer;

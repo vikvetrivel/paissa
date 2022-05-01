@@ -94,9 +94,9 @@ export default function Spreads() {
 
                             return (
                                 <Timeline.Item
+                                    key={s._id}
                                     color={s.netReturn < 0 ? "red" : "teal"}
                                     title={titleText}>
-                                    {" "}
                                     <Paper shadow='xl' p='md' withBorder>
                                         <Badge
                                             color='grape'
@@ -133,7 +133,7 @@ export default function Spreads() {
                                         </Text>
                                         {openLegs.map((l) => {
                                             return (
-                                                <Grid gutter={0}>
+                                                <Grid key={l._id} gutter={0}>
                                                     <Grid.Col span={8}>
                                                         <LegQuickView
                                                             leg={

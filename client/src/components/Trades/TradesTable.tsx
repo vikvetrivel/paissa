@@ -146,7 +146,8 @@ export function TradesTable({ data }: TradesTableProps) {
                                     color='gray'
                                     size='xs'
                                     mx={1}
-                                    variant='outline'>
+                                    variant='outline'
+                                    key={it}>
                                     {it
                                         .split(" ")
                                         .map((word) => word[0])
@@ -442,7 +443,7 @@ export function TradesTable({ data }: TradesTableProps) {
                     className={cx(classes.header, {
                         [classes.scrolled]: scrolled,
                     })}>
-                    <tr>
+                    <tr key='headerRow'>
                         <th style={{ width: 40 }}>
                             <Checkbox
                                 onChange={toggleAll}

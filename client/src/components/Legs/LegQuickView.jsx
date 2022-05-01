@@ -55,7 +55,9 @@ function LegQuickView(props) {
                 </Grid.Col>
                 <Grid.Col span={3}>
                     <Badge fullWidth color='gray' size='md' radius={0}>
-                        {format(new Date(props.leg.expiration), "MMM dd")}
+                        {props.leg.expiration
+                            ? format(new Date(props.leg.expiration), "MMM dd")
+                            : ""}
                     </Badge>
                 </Grid.Col>
                 <Grid.Col span={2}>
